@@ -37,7 +37,7 @@ export default async function handler(
     return res.status(201).json({
       id: poll.id,
       question: poll.question,
-      options: poll.options.map((o) => ({ id: o.id, text: o.text })),
+      options: poll.options.map((o: { id: string; text: string }) => ({ id: o.id, text: o.text })),
       shareLink: `/poll/${poll.id}`,
     });
   } catch (error) {
