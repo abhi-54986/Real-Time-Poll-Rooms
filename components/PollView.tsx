@@ -281,7 +281,7 @@ export default function PollView({ poll }: { poll: PollData }) {
                       {option.text}
                     </span>
                     <span className="text-sm text-gray-300 ml-4 whitespace-nowrap">
-                      {option.votes} ({percentage}%)
+                      {percentage}%
                     </span>
                   </div>
                 </div>
