@@ -70,16 +70,14 @@ export default async function handler(
 
     const ipHash = hashIP(getClientIP(req));
 
-    // Mechanism 1: Check for existing vote by IP hash
-    const existingIPVote = await prisma.vote.findUnique({
-      where: {
-        pollId_ipHash: { pollId, ipHash },
-      },
+    // Mechanism 1: IP-based rate limiting (max 5 votes per IP per poll)
+    const ipVoteCount = await prisma.vote.count({
+      where: { pollId, ipHash },
     });
 
-    if (existingIPVote) {
-      return res.status(409).json({
-        error: 'You have already voted on this poll (IP detected)',
+    if (ipVoteCount >= 5) {
+      return res.status(429).json({
+        error: 'Too many votes from this network. Please try again later.',
         mechanism: 'ip',
       });
     }
